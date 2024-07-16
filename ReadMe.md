@@ -9,5 +9,7 @@
 * Current version allows me to navigate between pages and gifs show
 
 * Have successfully copied over the analysis to the common.py and the intro text to the home page. Haven't updated links or changed the header or styling.
-* Will now try loading the layour for the charts on the other pages
+* Will now try loading the layout for the charts on the other pages
 * Analysis and intro text added successfully
+* Imported the same navbar as my levels app
+* Not correctly pulling through the logos. the URL based one does appear so it feels like it is a file path issue...

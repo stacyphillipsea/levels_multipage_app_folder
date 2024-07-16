@@ -2,8 +2,9 @@ from dash import html
 import dash_bootstrap_components as dbc
 from navbar import create_navbar
 from common import gif_with_text, data_dict
+from app import app  # Import the app instance
 
-nav = create_navbar()
+nav = create_navbar(app)
 
 header = html.H1('Welcome to the Flood Event Telemetry Analyser (FETA)')
 

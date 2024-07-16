@@ -6,8 +6,9 @@ from dash.dependencies import Input, Output, State
 from common import fetch_all_station_data, data_dict, MIN_DATE, MAX_DATE
 from app import app  # Assuming your Dash app object is named app
 import time
+from app import app  # Import the app instance
 
-nav = create_navbar()
+nav = create_navbar(app)
 
 header = html.H3('Welcome to page 1!')
 

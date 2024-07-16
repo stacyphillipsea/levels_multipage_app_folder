@@ -2,8 +2,9 @@
 from dash import html
 from navbar import create_navbar
 from common import gif_with_text
+from app import app  # Import the app instance
 
-nav = create_navbar()
+nav = create_navbar(app)
 
 header = html.H3('Welcome to page 3!')
 
