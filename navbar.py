@@ -5,7 +5,6 @@ from dash import html
 
 
 def create_navbar():
-
     # Create the logo element
     logo = html.A(html.Img(src="https://visualpharm.com/assets/818/Cheese-595b40b65ba036ed117d2a6c.svg",
                            height="50px"), href="/")
