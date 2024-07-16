@@ -15,6 +15,7 @@ app.layout = html.Div([
     html.Div(id='page-content')
 ])
 
+shared_data = "Shared data"
 
 # Update the callback to pass the fetched data to create_page_1
 @app.callback(Output('page-content', 'children'),
@@ -22,7 +23,6 @@ app.layout = html.Div([
 
 def display_page(pathname):
     if pathname == '/page-1':
-        # Pass global_data_dict to create_page_1
         return create_page_1(shared_data)
     elif pathname == '/page-2':
         return create_page_2(shared_data)

@@ -74,3 +74,4 @@ def fetch_data(n_clicks, start_date, end_date):
     else:
         print("Fetch button not clicked!")
         return html.Div()
+

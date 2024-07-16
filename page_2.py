@@ -22,6 +22,5 @@ def create_page_2(shared_data):
             text2="Yaaaaaaay"
         ),
         html.Hr(), # line break,
-        hello_component()
     ])
     return layout
