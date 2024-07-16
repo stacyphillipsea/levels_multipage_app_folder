@@ -1,10 +1,9 @@
 # page1.py:
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc, html
 import dash_bootstrap_components as dbc
 from navbar import create_navbar
 from dash.dependencies import Input, Output, State
-from common import fetch_all_station_data, global_data_dict, MIN_DATE, MAX_DATE
+from common import fetch_all_station_data, data_dict, MIN_DATE, MAX_DATE
 from app import app  # Assuming your Dash app object is named app
 import time
 
@@ -67,7 +66,7 @@ def fetch_data(n_clicks, start_date, end_date):
         
         # Show the spinner while data is being fetched
         return dbc.Spinner(
-            html.Div(fetch_data_content(start_date, end_date, global_data_dict)),
+            html.Div(fetch_data_content(start_date, end_date, data_dict)),
             color="primary",
             size="lg",
             fullscreen=True,

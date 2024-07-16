@@ -7,3 +7,7 @@
 * Tried to use this tutorial but the code doesn't navigate between the pages properly: https://medium.com/@mcmanus_data_works/how-to-create-a-multipage-dash-app-261a8699ac3f
 * Installed GitLens extension to help roll back changes
 * Current version allows me to navigate between pages and gifs show
+
+* Have successfully copied over the analysis to the common.py and the intro text to the home page. Haven't updated links or changed the header or styling.
+* Will now try loading the layour for the charts on the other pages
+* Analysis and intro text added successfully
