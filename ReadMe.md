@@ -14,5 +14,5 @@
 * Imported the same navbar as my levels app
 * Images are being correctly pulled from the assets/logos folder into the navbar (and would be pulled into pages too)
 
-* Page 1 loads each component but not all of the historic data appears to be there
-* Added modal but looks like the gaugeboard_data.csv is missing data for sites like Doveridge
+* Page 1 loads each component 
+* Updated the csv files so that they have the same data as the Levels app so all sites are correctly in there

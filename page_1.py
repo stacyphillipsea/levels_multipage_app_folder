@@ -23,7 +23,7 @@ from app import app  # Assuming your Dash app object is named app
 
 nav = create_navbar(app)
 
-header = html.H3('Welcome to page 1!')
+header = html.H3('Inidividual site analysis')
 
 # Define the content of the modal
 modal_content = dbc.Modal([
