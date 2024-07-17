@@ -4,7 +4,7 @@ import dash_bootstrap_components as dbc
 import os  
 from navbar import create_navbar
 
-asst_path = os.path.join(os.getcwd(), "assets_folder")
+asst_path = os.path.join(os.getcwd(), "assets")
 
 app = dash.Dash(__name__, 
                 suppress_callback_exceptions=True, 

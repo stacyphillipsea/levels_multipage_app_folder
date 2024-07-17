@@ -12,4 +12,4 @@
 * Will now try loading the layout for the charts on the other pages
 * Analysis and intro text added successfully
 * Imported the same navbar as my levels app
-* Not correctly pulling through the logos. the URL based one does appear so it feels like it is a file path issue...
+* Images are being correctly pulled from the assets/logos folder into the navbar (and would be pulled into pages too)

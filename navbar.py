@@ -6,10 +6,10 @@ import dash_bootstrap_components as dbc
 def create_navbar(app):
     # Define paths to the logos within the assets/logos directory
     logo_src = "https://visualpharm.com/assets/818/Cheese-595b40b65ba036ed117d2a6c.svg"
-    ea_logo_clip_src = app.get_asset_url('EA_logo_clip.png')
-    dash_logo_src = app.get_asset_url('DASH_logo.png')
-    apprenticeship_logo="https://nowskills.co.uk/wp-content/uploads/2018/11/Apprenticeships-Logo-PNG.png"
-    cs_logo = app.get_asset_url('CS_Logo.png')
+    ea_logo_clip_src = app.get_asset_url('logos/EA_logo_clip.png')
+    dash_logo_src = app.get_asset_url('logos/DASH_logo.png')
+    apprenticeship_logo = "https://nowskills.co.uk/wp-content/uploads/2018/11/Apprenticeships-Logo-PNG.png"
+    cs_logo = app.get_asset_url('logos/CS_Logo.png')
 
     navbar = dbc.Navbar(
         dbc.Container(
@@ -18,7 +18,7 @@ def create_navbar(app):
                     dbc.Row(
                         [
                             dbc.Col(html.Img(src=logo_src, height="50px")),
-                            dbc.Col(dbc.NavbarBrand("FETA Homepage", className="ms-2", style={"color": "#008531", "font-weight": "bold"})),
+                            dbc.Col(dbc.NavbarBrand("FETA Homepage", className="ms-2", style={"color": "#008531", "font-weight": "bold", "fontSize": "24px"})),
                         ],
                         align="center",
                         className="g-0",
@@ -28,7 +28,7 @@ def create_navbar(app):
                 ),
                 dbc.Row(
                     [
-                        dbc.Col(dbc.NavbarBrand("App powered by", className="ms-2", style={"color": "#008531"}), width="auto"),
+                        dbc.Col(dbc.NavbarBrand("App powered by", className="ms-2", style={"color": "#008531", "fontSize": "14px"}), width="auto"),
                         dbc.Col(html.A(html.Img(src=apprenticeship_logo, height="50px")), width="auto"),
                         dbc.Col(html.A(html.Img(src=cs_logo, height="50px")), width="auto"),
                         dbc.Col(html.A(html.Img(src=ea_logo_clip_src, height="60px")), width="auto", style={"padding-right": "10px"}),
@@ -36,7 +36,7 @@ def create_navbar(app):
                     ],
                     className="g-0 flex-nowrap mt-3 mt-md-0",
                     align="center",
-                    justify="center",
+                    justify="right",
                 ),
                 dbc.DropdownMenu(
                     nav=True,

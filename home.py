@@ -6,12 +6,9 @@ from app import app  # Import the app instance
 
 nav = create_navbar(app)
 
-header = html.H1('Welcome to the Flood Event Telemetry Analyser (FETA)')
-
 def create_page_home():
     layout = html.Div([
         nav,
-        header,
         
         # Main title
         html.H1("Welcome to the Flood Event Telemetry Analyser (FETA)!",
@@ -99,6 +96,7 @@ def create_page_home():
             gif_src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcjRxa3EyZXZobXN1ZnphaXM4a290c3Fndjg4eGUzb2pvM2tpMnFhNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/32aROMpuC7xqKdWbKO/giphy.gif",
             text1="Yay my code is doing what I want it to.",
             text2="This makes me a happy Stacy."
-        )
+        ),
+
     ])
     return layout
