@@ -22,6 +22,7 @@ shared_data = "Shared data"
               [Input('url', 'pathname')])
 
 def display_page(pathname):
+    print(f"Navigated to: {pathname}")  # Debug statement
     if pathname == '/page-1':
         return create_page_1(shared_data)
     elif pathname == '/page-2':

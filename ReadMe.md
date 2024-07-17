@@ -13,3 +13,5 @@
 * Analysis and intro text added successfully
 * Imported the same navbar as my levels app
 * Images are being correctly pulled from the assets/logos folder into the navbar (and would be pulled into pages too)
+
+* Page 1 loads each component but not all of the historic data appears to be there
