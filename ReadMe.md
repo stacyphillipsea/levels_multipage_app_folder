@@ -16,3 +16,12 @@
 
 * Page 1 loads each component 
 * Updated the csv files so that they have the same data as the Levels app so all sites are correctly in there
+
+
+
+# 07/10/2024
+* Changed the code to get the most recent September 2024 data and run analysis
+* Some minor changes to the code but all fine
+* Looks to be correctly identifying peaks over 3 possibl periods
+* df is saved directly to an Excel file
+* App is not deploying properly - I think I'm using the right delpoyment code because it appears in Posit, but is just blank or times out. Could copy the Levels App and try it in there instead
