@@ -1,5 +1,7 @@
 # common.py:
-
+##########################
+#### UPDATED TO TEST SEPTEMBER 2024 DATA ANALYSIS #################
+###########################
 import pandas as pd
 import numpy as np      # For numerical operations
 from datetime import datetime
@@ -18,19 +20,13 @@ from io import StringIO     # To loadd JSON to dataframe
 # Define key constants
 BASE_URL = "http://environment.data.gov.uk/hydrology/id"
 BASE_STATIONS_URL = "http://environment.data.gov.uk/hydrology/id/stations"
-MIN_DATE_STR = "2023-10-01"
-MAX_DATE_STR = "2024-02-29"
+MIN_DATE_STR = "2024-09-01"
+MAX_DATE_STR = "2024-10-03"
 MIN_DATE = datetime.strptime(MIN_DATE_STR, '%Y-%m-%d')
 MAX_DATE = datetime.strptime(MAX_DATE_STR, '%Y-%m-%d')
 DATE_FILTERS = {
-    'Babet': ('2023-10-18', '2023-10-31', 'red'),
-    'Ciaran': ('2023-11-01', '2023-11-08', 'blue'),
-    'Elin & Fergus': ('2023-12-09', '2023-12-17', 'black'),
-    'Gerrit': ('2023-12-26', '2024-01-02', 'pink'),
-    'Henk': ('2024-01-02', '2024-01-11', 'green'),
-    'Isha & Jocelyn': ('2024-01-21', '2024-01-27', 'orange'),
-    'Early February': ('2024-02-09', '2024-02-12', 'cornflowerblue'),
-    'Late February': ('2024-02-22', '2024-02-25', 'gray')
+    'Early Peak': ('2024-09-24', '2024-09-25', 'red'),
+    'Later Peak': ('2024-09-25', '2024-09-30', 'blue'),
 }
 
 ## Load data
@@ -80,7 +76,6 @@ def fetch_station_data(wiski_id):
         station = data['items'][0]
         label_field = station.get('label')
         name = str(label_field[1] if isinstance(label_field, list) else label_field)
-        wiski_id = {wiski_id}
         river_name = station.get('riverName')
         river_name = river_name[0] if isinstance(river_name, list) else river_name
         latitude = station.get('lat')
@@ -91,10 +86,12 @@ def fetch_station_data(wiski_id):
         response.raise_for_status()
         measure = response.json()
 
+        # This is where we check if level measures exist
         if not measure.get('items'):
             print(f"No level measures found for {name} (WISKI ID: {wiski_id})")
-            return None
+            return None  # Stop processing if no measures are found
 
+        # If measures are found, continue processing
         measure_id = measure['items'][0]['@id']
         readings_url = f"{measure_id}/readings?mineq-date={MIN_DATE_STR}&maxeq-date={MAX_DATE_STR}"
         response = requests.get(readings_url)
@@ -120,6 +117,7 @@ def fetch_station_data(wiski_id):
         print(f"Error fetching data for WISKI ID {wiski_id}: {e}")
         return None
 
+
 # Fetch data for all stations
 def fetch_all_station_data():
     data_dict = {}
@@ -132,10 +130,30 @@ def fetch_all_station_data():
             data_dict[station_data['name']] = station_data
             processed_ids[wiski_id] = station_data['name']
         else:
-            unprocessed_ids[wiski_id]
+            unprocessed_ids[wiski_id] = 'No data found'  # Add an entry to track unprocessed IDs
+
 
     print(unprocessed_ids)
     return data_dict, processed_ids, unprocessed_ids
+
+
+### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
+
+def fetch_and_save_all_station_data():
+    data_dict, _, _ = fetch_all_station_data()
+
+    for station_data in data_dict.values():
+        station_data['date_values'] = station_data['date_values'].to_json(orient='records')
+
+    file_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\levels_multipage_app_folder\\Sept_2024_nested_dict_extended.json"
+
+    with open(file_path, "w") as json_file:
+        json.dump(data_dict, json_file)
+
+    print("JSON file saved successfully.")
+
+fetch_and_save_all_station_data()
+
 
 # Find maximum values for each filter
 def find_max_values(df, filters):
@@ -143,12 +161,15 @@ def find_max_values(df, filters):
     for filter_name, date_range in filters.items():
         min_date, max_date, color = date_range
         condition = (df['dateTime'] >= min_date) & (df['dateTime'] <= max_date)
-        filtered_df = df[condition].dropna()  # Drop rows with NaN values
+        filtered_df = df[condition]
+        print(f"Filter: {filter_name}, Rows after filtering: {len(filtered_df)}")
         if not filtered_df.empty:
+            filtered_df = filtered_df.dropna()  # Drop rows with NaN values
             max_value_row = filtered_df.loc[filtered_df['value'].idxmax(), ['dateTime', 'value']]
             max_value_row['value'] = round(max_value_row['value'], 2)  # Round the maximum value to 2 decimal places
             max_values[filter_name] = max_value_row
     return max_values
+
 
 # Find and store maximum values for all stations
 def find_and_store_max_values(data_dict):
@@ -180,7 +201,7 @@ def process_peak_table_all(max_values, sites_of_interest_merge):
         # Iterate through the inner dictionary
         for storm, values in inner_dict.items():
             # Extract dateTime and value from the Series object
-            if values is not None:
+            if values is not None and 'dateTime' in values and 'value' in values:
                 date_time = values.get('dateTime')
                 value = values.get('value')
             else:
@@ -193,6 +214,14 @@ def process_peak_table_all(max_values, sites_of_interest_merge):
 
     # Create the DataFrame
     df = pd.DataFrame(df_list)
+
+    # Print df to debug
+    print("DataFrame before pivoting:")
+    print(df.head())  # Inspect the first few rows
+
+    # Check if 'DateTime' exists before pivoting
+    if 'DateTime' not in df.columns:
+        raise KeyError("The 'DateTime' column is missing from the DataFrame")
 
     # Pivot the DataFrame
     pivot_df = df.pivot_table(index='Station', columns='Storm', values=['DateTime', 'Value'], aggfunc='first')
@@ -211,10 +240,10 @@ def process_peak_table_all(max_values, sites_of_interest_merge):
     # Reset index if necessary
     flat_df.reset_index(inplace=True)
 
-# Merge with 'sites_of_interest_merge' DataFrame
-    peak_table_all = pd.merge(flat_df, wmd_gauges[['Region', 'River','Gauge','Order']], left_on='Station', right_on='Gauge', how='outer')
+    # Merge with 'sites_of_interest_merge' DataFrame
+    peak_table_all = pd.merge(flat_df, wmd_gauges[['Region', 'River', 'Gauge', 'Order']], left_on='Station', right_on='Gauge', how='outer')
 
-    columns_to_move = ['Order','Region', 'River']
+    columns_to_move = ['Order', 'Region', 'River']
     new_order = columns_to_move + [col for col in peak_table_all.columns if col not in columns_to_move]
     peak_table_all = peak_table_all[new_order]
     peak_table_all.drop(columns=['Gauge'], inplace=True)
@@ -223,6 +252,7 @@ def process_peak_table_all(max_values, sites_of_interest_merge):
     peak_table_all = peak_table_all.drop_duplicates(subset=['Station'])
     
     return df, peak_table_all
+
 
 # Do the comparison to the gaugeboard data
 def gaugeboard_comparison(gaugeboard_data, df):
@@ -479,10 +509,6 @@ def create_map(data_dict, selected_station=None):
 
     return map_html
 
-
-
-
-
 def gif_with_text(gif_src, text1, text2):
     return html.Div([
         html.Div([
@@ -499,9 +525,15 @@ def gif_with_text(gif_src, text1, text2):
         ], style={'overflow': 'hidden'})
     ], style={'overflow': 'hidden'})
 
+
+
+
+
+
+
 ### CALL YOUR FUNCTIONS 
 # Load station data from JSON file
-file_path = "nested_dict_extended.json"
+file_path = "Sept_2024_nested_dict_extended.json"
 data_dict = load_station_data_from_json(file_path)
 
 if data_dict:

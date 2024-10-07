@@ -16,7 +16,7 @@ def create_page_home():
         
         # Subtitle
         html.H5([
-            "This app allows you to explore river level data for the Winter flood events 2023-2024",
+            "This app allows you to explore river level data for the SEPTEMBER FLOODS OF 2024",
             html.Br(),
             "for sites across the West Midlands"
         ], style={"textAlign": "center"}),
