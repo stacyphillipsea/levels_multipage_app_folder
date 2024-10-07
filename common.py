@@ -21,12 +21,13 @@ from io import StringIO     # To loadd JSON to dataframe
 BASE_URL = "http://environment.data.gov.uk/hydrology/id"
 BASE_STATIONS_URL = "http://environment.data.gov.uk/hydrology/id/stations"
 MIN_DATE_STR = "2024-09-01"
-MAX_DATE_STR = "2024-10-03"
+MAX_DATE_STR = "2024-10-05"
 MIN_DATE = datetime.strptime(MIN_DATE_STR, '%Y-%m-%d')
 MAX_DATE = datetime.strptime(MAX_DATE_STR, '%Y-%m-%d')
 DATE_FILTERS = {
     'Early Peak': ('2024-09-24', '2024-09-25', 'red'),
     'Later Peak': ('2024-09-25', '2024-09-30', 'blue'),
+    'Oct Peak': ('2024-09-30', '2024-10-03', 'green')
 }
 
 ## Load data
@@ -162,7 +163,7 @@ def find_max_values(df, filters):
         min_date, max_date, color = date_range
         condition = (df['dateTime'] >= min_date) & (df['dateTime'] <= max_date)
         filtered_df = df[condition]
-        print(f"Filter: {filter_name}, Rows after filtering: {len(filtered_df)}")
+        #print(f"Filter: {filter_name}, Rows after filtering: {len(filtered_df)}")
         if not filtered_df.empty:
             filtered_df = filtered_df.dropna()  # Drop rows with NaN values
             max_value_row = filtered_df.loc[filtered_df['value'].idxmax(), ['dateTime', 'value']]
@@ -556,3 +557,7 @@ complete_stations = sorted(set(filtered_df['Station'].unique()) & set(threshold_
 percent_complete = len(complete_stations) / len(data_dict) * 100 if len(data_dict) > 0 else 0
 
 initial_map_html = create_map(data_dict)
+
+df.to_excel('Sept2024_Peaks.xlsx', index=False)
+
+
